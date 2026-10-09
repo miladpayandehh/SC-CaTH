@@ -1,0 +1,168 @@
+{
+  "status": "PASS",
+  "errors": [],
+  "record_counts": {
+    "career_events.csv": 2871,
+    "cold_start_users.csv": 220,
+    "companies.csv": 318,
+    "functions.csv": 18,
+    "graph_edges.csv": 5612,
+    "hyperedges.csv": 7020,
+    "industries.csv": 24,
+    "interest_titles.csv": 9891,
+    "locations.csv": 36,
+    "occupations.csv": 96,
+    "pair_context_features.csv": 5612,
+    "pair_rating_targets.csv": 5612,
+    "skills.csv": 240,
+    "temporal_events.csv": 12461,
+    "test_negative_samples.csv": 80388,
+    "test_pairs.csv": 812,
+    "train_negative_samples.csv": 14000,
+    "train_pairs.csv": 3500,
+    "universities.csv": 61,
+    "user_interest_edges.csv": 3336,
+    "user_interest_interactions.csv": 3336,
+    "user_skills.csv": 11217,
+    "user_user_relations.csv": 5612,
+    "users.csv": 1404,
+    "val_negative_samples.csv": 128700,
+    "val_pairs.csv": 1300
+  },
+  "graph": {
+    "average_degree": 7.994301994301995,
+    "density": 0.005698005698005698,
+    "min_degree": 1,
+    "max_degree": 18
+  },
+  "user_interest_density": 0.00024022529330384958,
+  "hyperedges_per_user": 5.0,
+  "cold_users": 220,
+  "split_relation_counts": {
+    "train": 3500,
+    "val": 1300,
+    "test": 812
+  },
+  "flat_negative_counts": {
+    "train": 14000,
+    "val": 128700,
+    "test": 80388
+  },
+  "temporal_event_counts": {
+    "relation": 5612,
+    "interest_like": 3336,
+    "career": 2871,
+    "hyperedge_creation": 642
+  },
+  "raw_duplicate_rate": 0.016990716412681732,
+  "global_timestamp_min": "2023-01-01T00:00:00",
+  "global_timestamp_max": "2025-03-01T00:00:00",
+  "timestamp_bounds_by_file": {
+    "career_events.csv": {
+      "start_time": {
+        "min": "2023-01-01T00:18:32",
+        "max": "2025-01-19T02:11:37"
+      },
+      "end_time": {
+        "min": "2023-07-03T09:52:26",
+        "max": "2025-01-19T02:11:37"
+      }
+    },
+    "graph_edges.csv": {
+      "timestamp": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "hyperedges.csv": {
+      "timestamp": {
+        "min": "2023-01-01T01:07:43",
+        "max": "2025-02-28T23:44:12"
+      }
+    },
+    "pair_context_features.csv": {
+      "timestamp": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "pair_rating_targets.csv": {
+      "timestamp": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "temporal_events.csv": {
+      "timestamp": {
+        "min": "2023-01-01T00:18:32",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "test_negative_samples.csv": {
+      "split_time": {
+        "min": "2024-11-02T00:00:00",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "test_pairs.csv": {
+      "split_time": {
+        "min": "2024-11-02T00:00:00",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "train_negative_samples.csv": {
+      "split_time": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2024-04-28T00:00:03"
+      }
+    },
+    "train_pairs.csv": {
+      "split_time": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2024-04-28T00:00:03"
+      }
+    },
+    "user_interest_edges.csv": {
+      "timestamp": {
+        "min": "2023-01-01T05:06:46",
+        "max": "2025-02-28T18:34:50"
+      }
+    },
+    "user_interest_interactions.csv": {
+      "timestamp": {
+        "min": "2023-01-01T05:06:46",
+        "max": "2025-02-28T18:34:50"
+      }
+    },
+    "user_skills.csv": {
+      "timestamp": {
+        "min": "2023-01-01T00:00:00",
+        "max": "2025-02-27T20:04:53"
+      }
+    },
+    "user_user_relations.csv": {
+      "timestamp": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2025-03-01T00:00:00"
+      }
+    },
+    "users.csv": {
+      "first_interaction_time": {
+        "min": "2023-01-01T00:26:30",
+        "max": "2025-02-07T00:00:06"
+      }
+    },
+    "val_negative_samples.csv": {
+      "split_time": {
+        "min": "2024-05-02T00:00:00",
+        "max": "2024-10-28T00:00:07"
+      }
+    },
+    "val_pairs.csv": {
+      "split_time": {
+        "min": "2024-05-02T00:00:00",
+        "max": "2024-10-28T00:00:07"
+      }
+    }
+  }
+}

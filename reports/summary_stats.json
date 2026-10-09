@@ -1,0 +1,127 @@
+{
+  "dataset_name": "SC-CaTH Synthetic Professional Network",
+  "seed": 42,
+  "synthetic_only": true,
+  "time_window": {
+    "start": "2023-01-01T00:00:00",
+    "inclusive_end": "2025-03-01T00:00:00",
+    "t1": "2024-05-01T00:00:00",
+    "t2": "2024-11-01T00:00:00",
+    "months": 26
+  },
+  "record_counts": {
+    "users.csv": 1404,
+    "companies.csv": 318,
+    "industries.csv": 24,
+    "functions.csv": 18,
+    "occupations.csv": 96,
+    "skills.csv": 240,
+    "universities.csv": 61,
+    "locations.csv": 36,
+    "user_skills.csv": 11217,
+    "career_events.csv": 2871,
+    "user_user_relations.csv": 5612,
+    "interest_titles.csv": 9891,
+    "user_interest_interactions.csv": 3336,
+    "hyperedges.csv": 7020,
+    "temporal_events.csv": 12461,
+    "graph_edges.csv": 5612,
+    "user_interest_edges.csv": 3336,
+    "pair_context_features.csv": 5612,
+    "pair_rating_targets.csv": 5612,
+    "cold_start_users.csv": 220,
+    "train_pairs.csv": 3500,
+    "val_pairs.csv": 1300,
+    "test_pairs.csv": 812,
+    "train_negative_samples.csv": 14000,
+    "val_negative_samples.csv": 128700,
+    "test_negative_samples.csv": 80388
+  },
+  "target_counts": {
+    "users": 1404,
+    "companies": 318,
+    "industries": 24,
+    "functions": 18,
+    "occupations": 96,
+    "career_events": 2871,
+    "interest_titles": 9891,
+    "relations": 5612,
+    "interest_likes": 3336,
+    "hyperedges": 7020,
+    "temporal_events": 12461
+  },
+  "split_positive_counts": {
+    "train": 3500,
+    "val": 1300,
+    "test": 812
+  },
+  "negative_sample_counts": {
+    "train_negative_samples.csv": 14000,
+    "val_negative_samples.csv": 128700,
+    "test_negative_samples.csv": 80388
+  },
+  "graph": {
+    "average_degree": 7.994301994301995,
+    "density": 0.005698005698005698,
+    "max_degree": 18,
+    "min_degree_all_window": 1
+  },
+  "user_interest_matrix": {
+    "density": 0.00024022529330384958,
+    "interactions": 3336,
+    "possible_pairs": 13886964
+  },
+  "hyperedges_per_user": {
+    "mean": 5.0,
+    "supply_chain_specific_count": 2808,
+    "supply_chain_specific_rate": 0.4
+  },
+  "cold_start": {
+    "cold_user_count": 220,
+    "cold_pre_t1_relation_count_min": 0,
+    "cold_pre_t1_relation_count_max": 0,
+    "train_pair_users_are_warm": true
+  },
+  "raw_duplicate_rate": 0.016990716412681732,
+  "missingness": {
+    "users.csv": {
+      "experience_years": 0.020655270655270654,
+      "profile_text": 0.021367521367521368,
+      "occupation_text": 0.021367521367521368,
+      "skills_text": 0.021367521367521368
+    },
+    "companies.csv": {},
+    "industries.csv": {},
+    "functions.csv": {},
+    "occupations.csv": {},
+    "skills.csv": {},
+    "universities.csv": {},
+    "locations.csv": {},
+    "user_skills.csv": {},
+    "career_events.csv": {
+      "previous_seniority_level": 0.4890282131661442,
+      "previous_occupation_id": 0.4890282131661442,
+      "end_time": 0.4890282131661442
+    },
+    "user_user_relations.csv": {},
+    "interest_titles.csv": {},
+    "user_interest_interactions.csv": {},
+    "hyperedges.csv": {
+      "sc_role": 0.6,
+      "sc_stage": 0.6,
+      "sc_path": 0.6
+    },
+    "temporal_events.csv": {},
+    "graph_edges.csv": {},
+    "user_interest_edges.csv": {},
+    "pair_context_features.csv": {},
+    "pair_rating_targets.csv": {},
+    "cold_start_users.csv": {},
+    "train_pairs.csv": {},
+    "val_pairs.csv": {},
+    "test_pairs.csv": {},
+    "train_negative_samples.csv": {},
+    "val_negative_samples.csv": {},
+    "test_negative_samples.csv": {}
+  }
+}

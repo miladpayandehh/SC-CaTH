@@ -1,0 +1,1305 @@
+{
+  "dataset_name": "SC-CaTH Synthetic Professional Network",
+  "version": "1.0.0",
+  "synthetic_only": true,
+  "seed": 42,
+  "time_window": {
+    "start": "2023-01-01T00:00:00",
+    "end": "2025-03-01T00:00:00",
+    "t1": "2024-05-01T00:00:00",
+    "t2": "2024-11-01T00:00:00",
+    "split_rule": "train: timestamp <= t1; validation: t1 < timestamp <= t2; test: timestamp > t2"
+  },
+  "structural_null_fields": {
+    "career_events.csv": [
+      "end_time",
+      "previous_seniority_level",
+      "previous_occupation_id"
+    ],
+    "hyperedges.csv": [
+      "sc_role",
+      "sc_stage",
+      "sc_path"
+    ]
+  },
+  "files": {
+    "users.csv": {
+      "description": "Baseline professional profile as of the beginning of the observation window; not a final/current snapshot.",
+      "primary_key": [
+        "user_id"
+      ],
+      "fields": {
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique synthetic user identifier U0001..."
+        },
+        "experience_years": {
+          "type": "float",
+          "nullable": true,
+          "description": "Synthetic professional experience at baseline; 2% deliberately null."
+        },
+        "industry_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to industries.industry_id."
+        },
+        "function_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to functions.function_id."
+        },
+        "occupation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to occupations.occupation_id."
+        },
+        "seniority_level": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Synthetic ordinal level 1..7."
+        },
+        "education_level": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic category; unknown represents unrecorded information."
+        },
+        "field_of_study": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic category; unknown represents unrecorded information."
+        },
+        "university_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to universities; V_UNKNOWN is a valid synthetic lookup row."
+        },
+        "company_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to companies; company at baseline."
+        },
+        "company_size": {
+          "type": "string",
+          "nullable": false,
+          "description": "Baseline company-size category or unknown token."
+        },
+        "geographic_region_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to locations; synthetic region."
+        },
+        "supply_chain_role": {
+          "type": "string",
+          "nullable": false,
+          "description": "One of seven abstract supply-chain roles."
+        },
+        "supply_chain_stage": {
+          "type": "string",
+          "nullable": false,
+          "description": "Upstream, Midstream, or Downstream."
+        },
+        "supply_chain_path": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic path category."
+        },
+        "profile_text": {
+          "type": "string",
+          "nullable": true,
+          "description": "Synthetic baseline text built from tokens/IDs; 2% null."
+        },
+        "occupation_text": {
+          "type": "string",
+          "nullable": true,
+          "description": "Synthetic occupation text; 2% null."
+        },
+        "skills_text": {
+          "type": "string",
+          "nullable": true,
+          "description": "Baseline skill IDs separated by |; 2% null."
+        },
+        "is_cold": {
+          "type": "boolean",
+          "nullable": false,
+          "description": "True when user has fewer than 5 user-user relation events at or before t1; split metadata, not a model feature."
+        },
+        "first_interaction_time": {
+          "type": "timestamp",
+          "nullable": true,
+          "description": "First relation/interest-like timestamp over the full window; audit-only and future-aware, exclude as a model feature."
+        },
+        "pre_t1_interaction_count": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Count of user-user relation events at or before t1; used to verify cold-start membership."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "industry_id",
+          "references_file": "industries.csv",
+          "references_field": "industry_id"
+        },
+        {
+          "field": "function_id",
+          "references_file": "functions.csv",
+          "references_field": "function_id"
+        },
+        {
+          "field": "occupation_id",
+          "references_file": "occupations.csv",
+          "references_field": "occupation_id"
+        },
+        {
+          "field": "university_id",
+          "references_file": "universities.csv",
+          "references_field": "university_id"
+        },
+        {
+          "field": "company_id",
+          "references_file": "companies.csv",
+          "references_field": "company_id"
+        },
+        {
+          "field": "geographic_region_id",
+          "references_file": "locations.csv",
+          "references_field": "geographic_region_id"
+        }
+      ]
+    },
+    "companies.csv": {
+      "description": "Synthetic organizations; sizes follow a heavy-tailed categorical distribution.",
+      "primary_key": [
+        "company_id"
+      ],
+      "fields": {
+        "company_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique synthetic company ID."
+        },
+        "industry_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to industries."
+        },
+        "company_size": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic company-size class."
+        },
+        "organization_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic organization-type token."
+        },
+        "geographic_region_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to locations."
+        },
+        "company_age_months": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Synthetic organization age in months; not an individual's age."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "industry_id",
+          "references_file": "industries.csv",
+          "references_field": "industry_id"
+        },
+        {
+          "field": "geographic_region_id",
+          "references_file": "locations.csv",
+          "references_field": "geographic_region_id"
+        }
+      ]
+    },
+    "industries.csv": {
+      "description": "24 synthetic industry categories.",
+      "primary_key": [
+        "industry_id"
+      ],
+      "fields": {
+        "industry_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic industry ID."
+        },
+        "industry_name": {
+          "type": "string",
+          "nullable": false,
+          "description": "Tokenized synthetic label."
+        },
+        "supply_chain_relevance": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Binary indicator 0/1 for synthetic scenario design."
+        }
+      },
+      "foreign_keys": []
+    },
+    "functions.csv": {
+      "description": "18 synthetic professional-function categories.",
+      "primary_key": [
+        "function_id"
+      ],
+      "fields": {
+        "function_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic function ID."
+        },
+        "function_name": {
+          "type": "string",
+          "nullable": false,
+          "description": "Tokenized synthetic label."
+        }
+      },
+      "foreign_keys": []
+    },
+    "occupations.csv": {
+      "description": "96 synthetic occupations; each maps to one professional function.",
+      "primary_key": [
+        "occupation_id"
+      ],
+      "fields": {
+        "occupation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic occupation ID."
+        },
+        "occupation_name": {
+          "type": "string",
+          "nullable": false,
+          "description": "Tokenized synthetic label."
+        },
+        "function_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to functions."
+        },
+        "seniority_scale_min": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Synthetic minimum level; all are 1."
+        },
+        "seniority_scale_max": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Synthetic maximum level; all are 7."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "function_id",
+          "references_file": "functions.csv",
+          "references_field": "function_id"
+        }
+      ]
+    },
+    "skills.csv": {
+      "description": "Synthetic skill vocabulary organized into semantic clusters.",
+      "primary_key": [
+        "skill_id"
+      ],
+      "fields": {
+        "skill_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic skill ID."
+        },
+        "skill_name": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic skill token."
+        },
+        "skill_cluster": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic cluster identifier."
+        }
+      },
+      "foreign_keys": []
+    },
+    "universities.csv": {
+      "description": "Synthetic educational institution lookup including a valid unknown token.",
+      "primary_key": [
+        "university_id"
+      ],
+      "fields": {
+        "university_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic institution ID."
+        },
+        "university_name": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic tokenized label."
+        }
+      },
+      "foreign_keys": []
+    },
+    "locations.csv": {
+      "description": "Synthetic geographic region lookup; no real addresses or coordinates.",
+      "primary_key": [
+        "geographic_region_id"
+      ],
+      "fields": {
+        "geographic_region_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic region ID."
+        },
+        "region_name": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic region token."
+        }
+      },
+      "foreign_keys": []
+    },
+    "user_skills.csv": {
+      "description": "Timestamped skill records. Filter by timestamp <= decision time.",
+      "primary_key": [
+        "user_id",
+        "skill_id",
+        "timestamp"
+      ],
+      "fields": {
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "skill_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to skills."
+        },
+        "proficiency": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Synthetic level 1..5."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Skill-record timestamp within the observation window."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "skill_id",
+          "references_file": "skills.csv",
+          "references_field": "skill_id"
+        }
+      ]
+    },
+    "career_events.csv": {
+      "description": "Chronological synthetic career-position records. First row per user matches the baseline profile; subsequent records are changes. end_time/previous fields are structurally null for active/first records.",
+      "primary_key": [
+        "event_id"
+      ],
+      "fields": {
+        "event_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique career event ID."
+        },
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "company_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to companies."
+        },
+        "industry_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to industries."
+        },
+        "function_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to functions."
+        },
+        "occupation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to occupations."
+        },
+        "skills": {
+          "type": "string",
+          "nullable": false,
+          "description": "Pipe-separated synthetic skill IDs."
+        },
+        "seniority_level": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Current level 1..7."
+        },
+        "previous_seniority_level": {
+          "type": "integer",
+          "nullable": true,
+          "description": "Previous level; structurally null for first trajectory event."
+        },
+        "previous_occupation_id": {
+          "type": "string",
+          "nullable": true,
+          "description": "Previous occupation; structurally null for first trajectory event."
+        },
+        "start_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Career-record/position start marker within the observation window."
+        },
+        "end_time": {
+          "type": "timestamp",
+          "nullable": true,
+          "description": "Next career event timestamp, or null for final active position."
+        },
+        "duration_months": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Synthetic position tenure 6..60; final active tenure can include time before the observation window."
+        },
+        "delta_seniority": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Current minus previous seniority; 0 for first record."
+        },
+        "transition_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "first_job for first record, otherwise promotion/lateral/demotion consistent with delta."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "company_id",
+          "references_file": "companies.csv",
+          "references_field": "company_id"
+        },
+        {
+          "field": "industry_id",
+          "references_file": "industries.csv",
+          "references_field": "industry_id"
+        },
+        {
+          "field": "function_id",
+          "references_file": "functions.csv",
+          "references_field": "function_id"
+        },
+        {
+          "field": "occupation_id",
+          "references_file": "occupations.csv",
+          "references_field": "occupation_id"
+        },
+        {
+          "field": "previous_occupation_id",
+          "references_file": "occupations.csv",
+          "references_field": "occupation_id"
+        }
+      ]
+    },
+    "user_user_relations.csv": {
+      "description": "Unique undirected positive user-user relations stored exactly once with user_id_1 < user_id_2.",
+      "primary_key": [
+        "relation_id"
+      ],
+      "fields": {
+        "relation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique relation ID."
+        },
+        "user_id_1": {
+          "type": "string",
+          "nullable": false,
+          "description": "First endpoint, lexicographically smaller ID."
+        },
+        "user_id_2": {
+          "type": "string",
+          "nullable": false,
+          "description": "Second endpoint, lexicographically larger ID."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Relation formation timestamp."
+        },
+        "relation_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic relation category."
+        },
+        "is_reciprocal": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 1; undirected relation semantics."
+        },
+        "interaction_strength": {
+          "type": "float",
+          "nullable": false,
+          "description": "Synthetic strength in [0,1]."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id_1",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "user_id_2",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        }
+      ]
+    },
+    "interest_titles.csv": {
+      "description": "9,891 synthetic interest/topic titles.",
+      "primary_key": [
+        "interest_title_id"
+      ],
+      "fields": {
+        "interest_title_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique synthetic title ID."
+        },
+        "title_text": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic token sequence."
+        },
+        "category": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic category token."
+        },
+        "related_skills": {
+          "type": "string",
+          "nullable": false,
+          "description": "Pipe-separated related skill IDs."
+        }
+      },
+      "foreign_keys": []
+    },
+    "user_interest_interactions.csv": {
+      "description": "Synthetic user-to-title likes, timestamped and unique by user/title pair.",
+      "primary_key": [
+        "interaction_id"
+      ],
+      "fields": {
+        "interaction_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique interest interaction ID."
+        },
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "interest_title_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to interest_titles."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Interaction timestamp."
+        },
+        "interaction_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "Always like."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "interest_title_id",
+          "references_file": "interest_titles.csv",
+          "references_field": "interest_title_id"
+        }
+      ]
+    },
+    "hyperedges.csv": {
+      "description": "Exactly five timestamped user-centred hyperedges per user. Career and skills context is reconstructed as of the hyperedge timestamp.",
+      "primary_key": [
+        "hyperedge_id"
+      ],
+      "fields": {
+        "hyperedge_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique hyperedge ID."
+        },
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "company_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to companies."
+        },
+        "industry_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to industries."
+        },
+        "function_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to functions."
+        },
+        "occupation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to occupations."
+        },
+        "skill_ids": {
+          "type": "string",
+          "nullable": false,
+          "description": "Pipe-separated skill IDs."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Hyperedge creation timestamp."
+        },
+        "relation_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic higher-order relation category."
+        },
+        "supply_chain_specific": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Binary flag; exactly 40% are 1."
+        },
+        "sc_role": {
+          "type": "string",
+          "nullable": true,
+          "description": "Supply-chain role; structurally null if supply_chain_specific=0."
+        },
+        "sc_stage": {
+          "type": "string",
+          "nullable": true,
+          "description": "Supply-chain stage; structurally null if supply_chain_specific=0."
+        },
+        "sc_path": {
+          "type": "string",
+          "nullable": true,
+          "description": "Supply-chain path; structurally null if supply_chain_specific=0."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "company_id",
+          "references_file": "companies.csv",
+          "references_field": "company_id"
+        },
+        {
+          "field": "industry_id",
+          "references_file": "industries.csv",
+          "references_field": "industry_id"
+        },
+        {
+          "field": "function_id",
+          "references_file": "functions.csv",
+          "references_field": "function_id"
+        },
+        {
+          "field": "occupation_id",
+          "references_file": "occupations.csv",
+          "references_field": "occupation_id"
+        }
+      ]
+    },
+    "temporal_events.csv": {
+      "description": "Exactly 12,461 events: all career, relation and interest-like events plus 642 sampled hyperedge-creation events.",
+      "primary_key": [
+        "event_id"
+      ],
+      "fields": {
+        "event_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Unique temporal event ID."
+        },
+        "event_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "career/relation/interest_like/hyperedge_creation."
+        },
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "target_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Type-dependent synthetic target ID."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Source-event timestamp in the observation window."
+        },
+        "metadata": {
+          "type": "string",
+          "nullable": false,
+          "description": "Compact JSON object with synthetic IDs/categories only."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        }
+      ]
+    },
+    "train_pairs.csv": {
+      "description": "Positive training pairs and four uniformly sampled non-positive candidate IDs per positive. Training pairs contain warm users only.",
+      "primary_key": [
+        "anchor_user_id",
+        "positive_user_id"
+      ],
+      "fields": {
+        "anchor_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Ranking query/anchor."
+        },
+        "positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Observed positive counterpart."
+        },
+        "negative_user_ids": {
+          "type": "string",
+          "nullable": false,
+          "description": "Four unique pipe-separated non-positive user IDs."
+        },
+        "split_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Positive relation timestamp."
+        },
+        "label": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 1 on positive pair rows."
+        }
+      },
+      "foreign_keys": []
+    },
+    "val_pairs.csv": {
+      "description": "Positive validation pairs and 99 uniformly sampled non-positive candidates; warm users only.",
+      "primary_key": [
+        "anchor_user_id",
+        "positive_user_id"
+      ],
+      "fields": {
+        "anchor_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Ranking anchor."
+        },
+        "positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Observed positive counterpart."
+        },
+        "negative_user_ids": {
+          "type": "string",
+          "nullable": false,
+          "description": "99 unique pipe-separated candidate IDs."
+        },
+        "split_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Positive relation timestamp."
+        },
+        "label": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 1 on positive pair rows."
+        }
+      },
+      "foreign_keys": []
+    },
+    "test_pairs.csv": {
+      "description": "Positive test pairs and 99 sampled non-positive candidates; includes inductive cold users that are absent from train/validation pairs.",
+      "primary_key": [
+        "anchor_user_id",
+        "positive_user_id"
+      ],
+      "fields": {
+        "anchor_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Ranking anchor; cold users are anchors on designated cold-test edges."
+        },
+        "positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Observed positive counterpart."
+        },
+        "negative_user_ids": {
+          "type": "string",
+          "nullable": false,
+          "description": "99 unique pipe-separated candidate IDs."
+        },
+        "split_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Positive relation timestamp."
+        },
+        "label": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 1 on positive pair rows."
+        }
+      },
+      "foreign_keys": []
+    },
+    "train_negative_samples.csv": {
+      "description": "Flat training non-positive samples: four per positive relation.",
+      "primary_key": [
+        "pair_id",
+        "sample_index"
+      ],
+      "fields": {
+        "pair_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic pair reference P_train_..."
+        },
+        "anchor_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Ranking anchor."
+        },
+        "positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Positive counterpart for context."
+        },
+        "non_positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Sampled non-positive candidate."
+        },
+        "sample_index": {
+          "type": "integer",
+          "nullable": false,
+          "description": "1..4 within pair."
+        },
+        "split_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Positive relation time."
+        },
+        "label": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 0."
+        }
+      },
+      "foreign_keys": []
+    },
+    "val_negative_samples.csv": {
+      "description": "Flat validation non-positive samples: 99 per positive relation.",
+      "primary_key": [
+        "pair_id",
+        "sample_index"
+      ],
+      "fields": {
+        "pair_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic pair reference P_val_..."
+        },
+        "anchor_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Ranking anchor."
+        },
+        "positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Positive counterpart for context."
+        },
+        "non_positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Sampled non-positive candidate."
+        },
+        "sample_index": {
+          "type": "integer",
+          "nullable": false,
+          "description": "1..99 within pair."
+        },
+        "split_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Positive relation time."
+        },
+        "label": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 0."
+        }
+      },
+      "foreign_keys": []
+    },
+    "test_negative_samples.csv": {
+      "description": "Flat test non-positive samples: 99 per positive relation.",
+      "primary_key": [
+        "pair_id",
+        "sample_index"
+      ],
+      "fields": {
+        "pair_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic pair reference P_test_..."
+        },
+        "anchor_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Ranking anchor."
+        },
+        "positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Positive counterpart for context."
+        },
+        "non_positive_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Sampled non-positive candidate."
+        },
+        "sample_index": {
+          "type": "integer",
+          "nullable": false,
+          "description": "1..99 within pair."
+        },
+        "split_time": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Positive relation time."
+        },
+        "label": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Always 0."
+        }
+      },
+      "foreign_keys": []
+    },
+    "graph_edges.csv": {
+      "description": "Undirected graph edges stored once; construct an undirected graph or duplicate each row in memory if a framework requires directed message-passing arcs.",
+      "primary_key": [
+        "source_user_id",
+        "target_user_id"
+      ],
+      "fields": {
+        "source_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Lexicographically smaller endpoint."
+        },
+        "target_user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "Lexicographically larger endpoint."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Edge formation timestamp."
+        },
+        "edge_type": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic relation type."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "source_user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "target_user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        }
+      ]
+    },
+    "user_interest_edges.csv": {
+      "description": "Auxiliary user-to-interest bipartite edges; time-filter before a decision timestamp.",
+      "primary_key": [
+        "user_id",
+        "interest_title_id"
+      ],
+      "fields": {
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "interest_title_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to interest_titles."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Like timestamp."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "interest_title_id",
+          "references_file": "interest_titles.csv",
+          "references_field": "interest_title_id"
+        }
+      ]
+    },
+    "pair_context_features.csv": {
+      "description": "Leakage-safe, event-time pair context for observed edges. Graph degree and mutual connections are computed strictly from relation timestamps earlier than the edge timestamp. Counterfactual sensitivity is a synthetic proxy, not a causal estimate.",
+      "primary_key": [
+        "relation_id"
+      ],
+      "fields": {
+        "relation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to user_user_relations."
+        },
+        "user_id_1": {
+          "type": "string",
+          "nullable": false,
+          "description": "Pair endpoint 1."
+        },
+        "user_id_2": {
+          "type": "string",
+          "nullable": false,
+          "description": "Pair endpoint 2."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Observed edge time."
+        },
+        "degree_1_pre_event": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Degree in graph strictly before event timestamp."
+        },
+        "degree_2_pre_event": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Degree in graph strictly before event timestamp."
+        },
+        "mutual_connections_pre_event": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Common neighbors strictly before event timestamp."
+        },
+        "same_company_baseline": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Same synthetic baseline company flag."
+        },
+        "same_industry_baseline": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Same synthetic baseline industry flag."
+        },
+        "same_function_baseline": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Same synthetic baseline function flag."
+        },
+        "seniority_gap_baseline": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Absolute baseline seniority difference."
+        },
+        "supply_chain_compatibility": {
+          "type": "float",
+          "nullable": false,
+          "description": "Synthetic pair compatibility proxy in [0,1]."
+        },
+        "signed_counterfactual_sensitivity": {
+          "type": "float",
+          "nullable": false,
+          "description": "Synthetic signed delta proxy in [-0.4,0.4], not a causal effect."
+        },
+        "counterfactual_intervention": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic intervention label: remove_supply_chain_context."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "relation_id",
+          "references_file": "user_user_relations.csv",
+          "references_field": "relation_id"
+        },
+        {
+          "field": "user_id_1",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "user_id_2",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        }
+      ]
+    },
+    "pair_rating_targets.csv": {
+      "description": "Synthetic 1..5 affinity targets attached to observed relation pairs for reproducible RMSE/MAE experiments. They are simulated labels, not real user ratings; non-observed pairs remain non-positive rather than assigned a low rating.",
+      "primary_key": [
+        "relation_id"
+      ],
+      "fields": {
+        "relation_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to user_user_relations."
+        },
+        "user_id_1": {
+          "type": "string",
+          "nullable": false,
+          "description": "First undirected pair endpoint."
+        },
+        "user_id_2": {
+          "type": "string",
+          "nullable": false,
+          "description": "Second undirected pair endpoint."
+        },
+        "timestamp": {
+          "type": "timestamp",
+          "nullable": false,
+          "description": "Relation event timestamp."
+        },
+        "rating_target": {
+          "type": "float",
+          "nullable": false,
+          "description": "Synthetic ordinal-like affinity target in [1,5], rounded to two decimals."
+        },
+        "split": {
+          "type": "string",
+          "nullable": false,
+          "description": "Temporal split: train/val/test."
+        },
+        "rating_source": {
+          "type": "string",
+          "nullable": false,
+          "description": "Always synthetic_latent_affinity."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "relation_id",
+          "references_file": "user_user_relations.csv",
+          "references_field": "relation_id"
+        },
+        {
+          "field": "user_id_1",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        },
+        {
+          "field": "user_id_2",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        }
+      ]
+    },
+    "cold_start_users.csv": {
+      "description": "Cold users reserved for the inductive test split; no user-user relations or interest likes before t1.",
+      "primary_key": [
+        "user_id"
+      ],
+      "fields": {
+        "user_id": {
+          "type": "string",
+          "nullable": false,
+          "description": "FK to users."
+        },
+        "pre_t1_relation_count": {
+          "type": "integer",
+          "nullable": false,
+          "description": "Must be zero for designated cold test users."
+        },
+        "reserved_split": {
+          "type": "string",
+          "nullable": false,
+          "description": "Always test."
+        },
+        "cold_start_reason": {
+          "type": "string",
+          "nullable": false,
+          "description": "Synthetic split rule."
+        }
+      },
+      "foreign_keys": [
+        {
+          "field": "user_id",
+          "references_file": "users.csv",
+          "references_field": "user_id"
+        }
+      ]
+    }
+  }
+}
